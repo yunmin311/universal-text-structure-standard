@@ -25,13 +25,36 @@ def registry_check(data=None):
     ids = [r['rule_id'] for r in data['rules']]
     if len(set(ids)) != len(ids):
         raise ValueError('rule_id 必须唯一；JSON Schema 的 uniqueItems 不能保证对象某一字段唯一')
+    mapped = set()
     for rule in data['rules']:
-        for example in rule['examples']:
-            if not (ROOT / example).is_file():
-                raise ValueError(f'缺失 example: {example}')
+        for side, examples in rule['examples'].items():
+            for example in examples:
+                file = ROOT / example
+                if not example.startswith(f'examples/{side}/') or '..' in Path(example).parts or not file.is_file():
+                    raise ValueError(f'无效 example: {example}')
+                header = re.match(r'<!-- rules: ([^;]+);', file.read_text(encoding='utf-8'))
+                if not header or rule['rule_id'] not in header[1].split(', '):
+                    raise ValueError(f'缺少反向规则映射: {example} / {rule["rule_id"]}')
+                mapped.add(example)
         for source in rule['sources']:
-            if not (ROOT / 'sources' / source).is_file():
-                raise ValueError(f'缺失 source: {source}')
+            name, _, anchor = source.partition('#')
+            file = ROOT / name
+            if name != 'references/README.md' or not file.is_file():
+                raise ValueError(f'缺失公开 source: {source}')
+            if anchor and f'id="{anchor}"' not in file.read_text(encoding='utf-8'):
+                raise ValueError(f'缺失 source anchor: {source}')
+    for file in (ROOT / 'examples').rglob('*.md'):
+        name = file.relative_to(ROOT).as_posix()
+        if name not in mapped:
+            raise ValueError(f'示例未登记: {name}')
+        header = re.match(r'<!-- rules: ([^;]+);', file.read_text(encoding='utf-8'))
+        if not header:
+            raise ValueError(f'示例缺少 metadata: {name}')
+        for rid in header[1].split(', '):
+            match = next((r for r in data['rules'] if r['rule_id'] == rid), None)
+            side = file.parent.name
+            if not match or name not in match['examples'][side]:
+                raise ValueError(f'示例反向映射未登记: {name} / {rid}')
     return data
 
 
@@ -87,6 +110,9 @@ def scan(text):
 
     # Parse code spans within a paragraph, allowing multiline spans and variable delimiters.
     body = '\n'.join(visible)
+    for number, line in enumerate(visible, 1):
+        if re.match(r'^[ \t]*(?:(?:[-+*]|\d+[.)]) +)?\*\*(`+)[^`\n]+\1[:：]?\*\*', line):
+            emit('REN-004', number, 'WARNING', '技术实体默认只用 inline code；合法嵌套需确认强调理由')
     for block in re.finditer(r'[^\n]+(?:\n(?!\n)[^\n]+)*', body):
         start_line = body.count('\n', 0, block.start()) + 1
         part = block.group()
@@ -202,18 +228,67 @@ def test_all():
         else:
             failures += 1
             print(f'FAIL schema mutation {idx}')
+    for version in ['0.2.1', '1.0.0', '2.1.0-rc.1+build.7']:
+        future = copy.deepcopy(data)
+        future['standard_version'] = version
+        registry_check(future)
+        print(f'PASS independent standard version {version}')
+    for key, value in [('standard_version', '01.2.0'), ('standard_version', '1.0.0-01'), ('schema_version', 2)]:
+        bad = copy.deepcopy(data)
+        bad[key] = value
+        try:
+            registry_check(bad)
+        except ValueError:
+            print(f'PASS reject {key}={value}')
+        else:
+            failures += 1
+            print(f'FAIL accepted {key}={value}')
+    # Test both directions of example links, not only file existence.
+    bad = copy.deepcopy(data)
+    bad['rules'][0]['examples']['good'] = ['examples/good/compact.md']
+    try:
+        registry_check(bad)
+    except ValueError:
+        print('PASS reject incorrect example mapping')
+    else:
+        failures += 1
+        print('FAIL accepted incorrect example mapping')
     standard = (ROOT / 'STANDARD.md').read_text()
-    sync = all(standard.count('`' + r['rule_id'] + '`') == 1 and r['preferred_action'] in standard for r in data['rules'])
+    mentioned = set(re.findall(r'`((?:SEM|PRE|REN)-[0-9]{3})`', standard))
+    sync = mentioned == known and data['standard_version'] in standard
     failures += not sync
-    print(('PASS' if sync else 'FAIL') + ' canonical rule coverage/actions')
-    import hashlib
-    manifest = json.loads((ROOT / 'sources/manifest.json').read_text())
-    snapshots_ok = all(hashlib.sha256((ROOT / 'sources' / item['snapshot']).read_bytes()).hexdigest() == item['sha256'] for item in manifest['sources'] if 'snapshot' in item)
-    regression = (ROOT / 'tests/fixtures/invalid/project-inbox-regression.md').read_text().strip()
-    snapshots_ok = snapshots_ok and regression in (ROOT / 'sources/project-inbox.md').read_text().splitlines()
-    failures += not snapshots_ok
-    print(('PASS' if snapshots_ok else 'FAIL') + ' source hashes + verbatim regression')
-    print(f'{"FAIL" if failures else "PASS"}: {len(expected)} fixtures, 5 schema mutations, canonical coverage, source integrity; {failures} failures')
+    print(('PASS' if sync else 'FAIL') + ' canonical rule references/version (not semantic proof)')
+    # Coverage anchors prevent accidental omission; explanation quality remains human-reviewed.
+    coverage = json.loads((ROOT / 'tests/expected/policy-coverage.json').read_text())
+    for topic, anchors in coverage.items():
+        ok = all(anchor in standard for anchor in anchors)
+        failures += not ok
+        print(('PASS' if ok else 'FAIL') + ' policy coverage: ' + topic)
+    public_files = [ROOT / name for name in ['README.md', 'STANDARD.md', 'CHANGELOG.md', 'references/README.md']]
+    public_files += list((ROOT / 'examples/good').glob('*.md'))
+    clean_docs = all(not scan(file.read_text()) for file in public_files)
+    failures += not clean_docs
+    print(('PASS' if clean_docs else 'FAIL') + ' maintained docs and good examples strict gate')
+    if not clean_docs:
+        for file in public_files:
+            for finding in scan(file.read_text()):
+                print(file.relative_to(ROOT), finding)
+    # No private snapshots are required by tests. Scan distributable text without Git or local sources.
+    private_prefix = '/' + 'mnt' + '/'
+    absolute = re.compile(re.escape(private_prefix) + r'[a-z]/|\b[A-Za-z]:[\\/]|/' + 'home' + r'/[^/\s]+/')
+    leaks = []
+    for folder in ['sources']:
+        if (ROOT / folder).exists():
+            leaks.append(folder)
+    for file in ROOT.rglob('*'):
+        relative = file.relative_to(ROOT)
+        if any(part in {'.git', '.local-sources', '.venv', '__pycache__'} for part in relative.parts) or not file.is_file():
+            continue
+        if file.suffix in {'.md', '.yaml', '.yml', '.json', '.py', '.txt'} and absolute.search(file.read_text()):
+            leaks.append(relative.as_posix())
+    failures += bool(leaks)
+    print(('FAIL ' + ', '.join(leaks) if leaks else 'PASS') + ' public working-tree path/source audit (not history cleanup)')
+    print(f'{"FAIL" if failures else "PASS"}: {len(expected)} fixtures; schema/version/mapping, coverage and public checks; {failures} failures')
     return bool(failures)
 
 

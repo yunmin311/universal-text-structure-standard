@@ -1,4 +1,4 @@
-<!-- 违反 SEM-006。三个能力彼此并列，缩进捏造从属关系。 -->
+<!-- rules: SEM-006; provenance: minimal-counterexample -->
 
 - 支持读取。
   - 支持验证。

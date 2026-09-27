@@ -1,56 +1,67 @@
-version: 0.1.0
+standard_version: 0.2.0
+schema_version: 1
 rules:
 - rule_id: SEM-001
   category: semantic
   title: 连续解释用正文
   severity: INFO
   condition: 主题需要先建立认知或解释因果
-  preferred_action: 先写完整介绍段；同一论点用连贯自然段承载
+  preferred_action: 按 Chat / Document 模式给出最小充分解释；完整观点用连续正文承载
   forbidden_pattern:
   - 把连续解释拆成 bullet 或碎句
   exceptions:
-  - 真实并列属性转列表
+  - 简单答案可一句结束；长期文档补齐独立阅读所需机制与证据
   validation_method: manual
   examples:
-  - examples/good/project-inbox.md
+    good:
+    - examples/good/project-inbox.md
+    - examples/good/technical-handoff.md
+    bad:
+    - examples/bad/fragmented-explanation.md
   status: active
   sources:
-  - request.md
-  - voice-readme.md
+  - references/README.md#confirmed-policy
 - rule_id: SEM-002
   category: semantic
   title: 并列信息用列表
   severity: INFO
   condition: 属性、能力、边界等可独立并列
-  preferred_action: 用紧凑 bullet 显示并列关系
+  preferred_action: 用完整信息单元表达真实并列；长列表复核分组
   forbidden_pattern:
   - 将多个独立属性挤入长句
   exceptions:
-  - 少量短枚举可留在句内
+  - 短枚举可横向；六项以上考虑重组，必要的完整枚举保留
   validation_method: manual
   examples:
-  - examples/good/project-inbox.md
+    good:
+    - examples/good/project-inbox.md
+    - examples/good/technical-handoff.md
+    - examples/good/workflow.md
+    bad:
+    - examples/bad/parallel-in-prose.md
   status: active
   sources:
-  - request.md
-  - voice-readme.md
+  - references/README.md#confirmed-policy
 - rule_id: SEM-003
   category: semantic
   title: 顺序与有限状态用编号
   severity: INFO
   condition: 执行顺序、优先级或严格有限状态需要明确枚举
-  preferred_action: 用编号并说明顺序或枚举含义
+  preferred_action: 严格步骤用编号；有限状态枚举标明非时序含义
   forbidden_pattern:
   - 无顺序并列信息伪装成步骤
   exceptions:
-  - 有限状态编号不自动代表时间顺序
+  - 状态比较优先表格；无顺序能力用 bullet
   validation_method: manual
   examples:
-  - examples/good/project-inbox.md
+    good:
+    - examples/good/project-inbox.md
+    - examples/good/workflow.md
+    bad:
+    - examples/bad/unordered-steps.md
   status: active
   sources:
-  - request.md
-  - voice-readme.md
+  - references/README.md#confirmed-policy
 - rule_id: SEM-004
   category: semantic
   title: 稳定比较用表格
@@ -63,28 +74,35 @@ rules:
   - 单个对象的说明可用正文或列表
   validation_method: manual
   examples:
-  - examples/good/project-inbox.md
+    good:
+    - examples/good/project-inbox.md
+    - examples/good/technical-handoff.md
+    bad:
+    - examples/bad/comparison-in-prose.md
   status: active
   sources:
-  - request.md
-  - voice-readme.md
+  - references/README.md#confirmed-policy
 - rule_id: SEM-005
   category: semantic
   title: 标题表达真实层级
   severity: WARNING
   condition: 内容存在可独立定位的章节与子主题
-  preferred_action: 大章节用二级标题；稳定子主题用三级标题；保持真实父子层级
+  preferred_action: Chat 保留必要分区；Document 通常二/三级，少数第四级
   forbidden_pattern:
   - 空泛标题、逐条规则升级标题、跳级
   exceptions:
-  - 文档标题可用一级；独立摘录可从二级开始
+  - 单句标题优先并入正文；确有独立导航价值可保留
   validation_method: static
   examples:
-  - examples/good/project-inbox.md
+    good:
+    - examples/good/project-inbox.md
+    - examples/good/technical-handoff.md
+    - examples/good/workflow.md
+    bad:
+    - examples/bad/meaningless-headings.md
   status: active
   sources:
-  - request.md
-  - voice-readme.md
+  - references/README.md#confirmed-policy
 - rule_id: SEM-006
   category: semantic
   title: 嵌套表达真实从属
@@ -97,28 +115,32 @@ rules:
   - 多层真实从属可保留并人工复核
   validation_method: manual
   examples:
-  - examples/good/project-inbox.md
+    good:
+    - examples/good/workflow.md
+    bad:
+    - examples/bad/unnecessary-nesting.md
   status: active
   sources:
-  - request.md
-  - voice-readme.md
+  - references/README.md#confirmed-policy
 - rule_id: SEM-007
   category: semantic
-  title: 关系链与文件树各用其形
+  title: 精确内容与关系结构各用其形
   severity: INFO
   condition: 需要表达流转、关系或目录归属
-  preferred_action: 关系用箭头链；文件结构用 tree；放入代码块保留对齐
+  preferred_action: 关系用箭头，目录用 tree；仅需保留格式时使用代码块
   forbidden_pattern:
   - 把目录归属画成时间流程
   exceptions:
-  - 普通文件名无需树形结构
+  - 短关系可在正文横向表达；引用块仅用于原文、可复制指令或特殊强调
   validation_method: manual
   examples:
-  - examples/good/project-inbox.md
+    good:
+    - examples/good/workflow.md
+    bad:
+    - examples/bad/prose-in-code.md
   status: active
   sources:
-  - request.md
-  - voice-readme.md
+  - references/README.md#confirmed-policy
 - rule_id: PRE-001
   category: presentation
   title: 保留完整段落
@@ -128,14 +150,18 @@ rules:
   forbidden_pattern:
   - 每句话独占一段
   exceptions:
-  - 真正主题切换、独立结论允许短段
+  - 2–5 段、3–6 句是 Chat 经验而非硬门槛；真实转折和独立结论可短段
   validation_method: heuristic
   examples:
-  - examples/good/compact.md
+    good:
+    - examples/good/compact.md
+    - examples/good/project-inbox.md
+    - examples/good/technical-handoff.md
+    bad:
+    - examples/bad/micro-paragraphs.md
   status: active
   sources:
-  - request.md
-  - voice-readme.md
+  - references/README.md#confirmed-policy
 - rule_id: PRE-002
   category: presentation
   title: 避免文字墙
@@ -148,11 +174,15 @@ rules:
   - 完整复杂论证可保持长段
   validation_method: heuristic
   examples:
-  - examples/good/compact.md
+    good:
+    - examples/good/compact.md
+    - examples/good/project-inbox.md
+    - examples/good/technical-handoff.md
+    bad:
+    - examples/bad/text-wall.md
   status: active
   sources:
-  - request.md
-  - voice-readme.md
+  - references/README.md#confirmed-policy
 - rule_id: PRE-003
   category: presentation
   title: 空白与列表紧凑
@@ -162,14 +192,18 @@ rules:
   forbidden_pattern:
   - 连续空行、简单列表逐项空一行
   exceptions:
-  - 多段列表项及渲染需要的空行保留
+  - 复杂列表与渲染必需间隔保留；减少 70–80% 无用留白仅是方向
   validation_method: heuristic
   examples:
-  - examples/good/compact.md
+    good:
+    - examples/good/compact.md
+    - examples/good/project-inbox.md
+    - examples/good/workflow.md
+    bad:
+    - examples/bad/whitespace-abuse.md
   status: active
   sources:
-  - request.md
-  - voice-readme.md
+  - references/README.md#confirmed-policy
 - rule_id: PRE-004
   category: presentation
   title: 减少无意义标题与粗体伪标题
@@ -182,11 +216,16 @@ rules:
   - 确有结构价值的标题按 SEM-005 保留
   validation_method: heuristic
   examples:
-  - examples/good/compact.md
+    good:
+    - examples/good/compact.md
+    - examples/good/project-inbox.md
+    - examples/good/technical-handoff.md
+    bad:
+    - examples/bad/fake-bold-headings.md
+    - examples/bad/meaningless-headings.md
   status: active
   sources:
-  - request.md
-  - voice-readme.md
+  - references/README.md#confirmed-policy
 - rule_id: PRE-005
   category: presentation
   title: 短链横向长流程纵向
@@ -199,11 +238,13 @@ rules:
   - 按实际可读性判断；不设固定节点数
   validation_method: manual
   examples:
-  - examples/good/project-inbox.md
+    good:
+    - examples/good/workflow.md
+    bad:
+    - examples/bad/short-flow-vertical.md
   status: active
   sources:
-  - request.md
-  - voice-readme.md
+  - references/README.md#confirmed-policy
 - rule_id: REN-001
   category: render_safety
   title: 粗体标记成对
@@ -216,11 +257,14 @@ rules:
   - 代码与转义中的字面星号不作为强调
   validation_method: static
   examples:
-  - examples/good/compact.md
+    good:
+    - examples/good/compact.md
+    bad:
+    - examples/bad/bold-code-crossing.md
+    - examples/bad/broken-emphasis.md
   status: active
   sources:
-  - request.md
-  - project-inbox.md
+  - references/README.md#confirmed-policy
 - rule_id: REN-002
   category: render_safety
   title: 行内代码闭合
@@ -233,11 +277,14 @@ rules:
   - 代码内容可含较短反引号；跨度可跨同一段的换行
   validation_method: static
   examples:
-  - examples/good/compact.md
+    good:
+    - examples/good/compact.md
+    - examples/good/workflow.md
+    bad:
+    - examples/bad/inline-unclosed.md
   status: active
   sources:
-  - request.md
-  - project-inbox.md
+  - references/README.md#confirmed-policy
 - rule_id: REN-003
   category: render_safety
   title: 代码围栏闭合
@@ -250,45 +297,57 @@ rules:
   - 围栏内容按字面处理
   validation_method: static
   examples:
-  - examples/good/compact.md
+    good:
+    - examples/good/compact.md
+    - examples/good/workflow.md
+    bad:
+    - examples/bad/fence-unclosed.md
   status: active
   sources:
-  - request.md
-  - project-inbox.md
+  - references/README.md#confirmed-policy
 - rule_id: REN-004
   category: render_safety
-  title: 字段冒号与粗体边界一致
+  title: 字段边界与技术实体默认格式
   severity: WARNING
-  condition: 字段标签采用加粗形式
-  preferred_action: 使用 **字段：** 内容；文件名可用 **`file.yaml`：** 内容
+  condition: 语义字段或技术实体出现在说明中
+  preferred_action: 技术实体只用 inline code；语义标签使用 **字段：** 内容
   forbidden_pattern:
-  - 冒号单独加粗、字段闭合符错位
+  - 默认给文件名代码额外加粗；冒号单独加粗或边界错位
   exceptions:
-  - 普通正文中的冒号无需加粗
+  - 极少数有语义理由的合法粗体嵌套代码允许，须人工复核
   validation_method: static
   examples:
-  - examples/good/compact.md
+    good:
+    - examples/good/compact.md
+    - examples/good/technical-handoff.md
+    bad:
+    - examples/bad/project-inbox-regression.md
   status: active
   sources:
-  - request.md
-  - project-inbox.md
+  - references/README.md#confirmed-policy
+  - references/README.md#regression
 - rule_id: REN-005
   category: render_safety
   title: 避免粗体与代码交叉
   severity: WARNING
   condition: 同一字段同时使用强调与行内代码
-  preferred_action: 代码跨度完整嵌入粗体或单独使用代码
+  preferred_action: 避免强调与代码交叉；合法嵌套不自动判错
   forbidden_pattern:
   - 将强调定界符藏进代码或跨越代码边界
   exceptions:
-  - 代码教学中展示星号是合法字面内容；上下文人工复核
+  - 教学中代码内字面星号合法；配对嵌套强调仅非默认例外
   validation_method: static
   examples:
-  - examples/good/compact.md
+    good:
+    - examples/good/compact.md
+    - examples/good/technical-handoff.md
+    bad:
+    - examples/bad/bold-code-crossing.md
+    - examples/bad/project-inbox-regression.md
   status: active
   sources:
-  - request.md
-  - project-inbox.md
+  - references/README.md#confirmed-policy
+  - references/README.md#regression
 - rule_id: REN-006
   category: render_safety
   title: 列表缩进可解释
@@ -301,11 +360,13 @@ rules:
   - 复杂真实层级允许人工确认；不统一强制两空格
   validation_method: heuristic
   examples:
-  - examples/good/compact.md
+    good:
+    - examples/good/workflow.md
+    bad:
+    - examples/bad/deep-list.md
   status: active
   sources:
-  - request.md
-  - project-inbox.md
+  - references/README.md#confirmed-policy
 - rule_id: REN-007
   category: render_safety
   title: 表格分隔与列数匹配
@@ -318,8 +379,10 @@ rules:
   - 转义管线不分列；本版本仅覆盖简单管线表格
   validation_method: static
   examples:
-  - examples/good/compact.md
+    good:
+    - examples/good/compact.md
+    bad:
+    - examples/bad/table-columns.md
   status: active
   sources:
-  - request.md
-  - project-inbox.md
+  - references/README.md#confirmed-policy

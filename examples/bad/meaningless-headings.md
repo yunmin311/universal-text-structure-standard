@@ -1,4 +1,4 @@
-<!-- 违反 PRE-004, SEM-005。标题不能帮助定位实际主题；应合并正文或使用真实主题名。 -->
+<!-- rules: SEM-005, PRE-004; provenance: minimal-counterexample -->
 
 ## 内容
 

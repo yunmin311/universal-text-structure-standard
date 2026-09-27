@@ -1,0 +1,3 @@
+<!-- rules: SEM-004; provenance: minimal-counterexample -->
+
+选项甲成本低且容量小，选项乙成本高且容量大，两者都需要逐项比较成本与容量。

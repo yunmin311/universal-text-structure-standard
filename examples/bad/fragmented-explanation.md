@@ -1,0 +1,4 @@
+<!-- rules: SEM-001; provenance: minimal-counterexample -->
+
+- 因为配置决定预期。
+- 所以验证对照配置。

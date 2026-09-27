@@ -1,0 +1,5 @@
+<!-- rules: SEM-007; provenance: minimal-counterexample -->
+
+```text
+这里是一段普通解释，没有对齐或精确输出的需求。
+```

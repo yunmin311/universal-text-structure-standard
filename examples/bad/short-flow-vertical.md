@@ -1,4 +1,4 @@
-<!-- 违反 PRE-005。没有分支与长节点的短链可横向表达。 -->
+<!-- rules: PRE-005; provenance: minimal-counterexample -->
 
 ```text
 读取

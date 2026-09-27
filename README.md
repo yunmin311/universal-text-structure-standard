@@ -1,39 +1,43 @@
 # universal-text-structure-standard
 
-维护通用文本结构与排版规范的小型工程，当前版本为 0.1.0。规范覆盖语义结构、呈现密度和 Markdown 渲染安全，适用于笔记、研究材料、项目文档与长回答。它不规定固定章节，不复制课程或 Project Inbox 的内容模板。
+通用文本结构与排版规范，当前版本 0.2.0。先读 [STANDARD.md](STANDARD.md)：它独立解释 Chat Mode、Document Mode、完整段落、真实层级、技术文档组织与输出前检查。[FORMAT_RULES.yaml](FORMAT_RULES.yaml) 保存 19 个稳定规则编号及检测映射，供工具使用，不是第二份写作长文。
 
-## 阅读与使用
+## 使用与资产职责
 
-先读 [STANDARD.md](STANDARD.md)，按内容关系选择结构，再用检测器检查可静态识别的问题。[FORMAT_RULES.yaml](FORMAT_RULES.yaml) 保存 19 条稳定规则：semantic 7 条、presentation 5 条、render_safety 7 条。[来源说明](sources/README.md) 记录提取、合并、确认边界和待确认事项。
+先依据语义写作，再运行检查，最后人工复核结构是否服务内容。正文、标题、列表、编号、表格与代码各有职责，任何单一格式都不是目标；自动化 PASS 也不能证明整篇文本语义合格。规则按 semantic 7 条、presentation 5 条、render_safety 7 条分层，未为本轮每项解释增加新编号。
 
-- `STANDARD.md`：供人阅读的正式定义，三层分开描述。
-- `FORMAT_RULES.yaml` 与 `schemas/format-rules.schema.json`：规则登记和类型约束；编号唯一性由脚本额外检查。
-- `examples/good/`：真实结构摘录与紧凑示例；`examples/bad/`：带规则编号的反例。
-- `tests/fixtures/` 与 `tests/expected/cases.json`：原始测试输入和明确预期；不修改错误样本来使检测通过。
-- `scripts/validate.py`：轻量检测器及一次执行的 fixture 测试。
-- `sources/`：授权输入快照、原路径与校验值；仅作证据，不把来源全文当成规范。
-- `CHANGELOG.md`：记录规则语义、合并、退出、schema 与检测行为变化。
+- `STANDARD.md`：完整执行条件、模式差异、例外、Formatting Gate 与 Render Gate。
+- `FORMAT_RULES.yaml`、`schemas/format-rules.schema.json`：简短约束、字段契约、版本和 good/bad 映射。
+- `examples/good/`：两份脱敏 Gold 改编、一份仓库技术交接教学样本和一个简短局部示例；不是固定模板。
+- `examples/bad/`、`tests/fixtures/`、`tests/expected/`：带规则编号的反例、稳定测试输入及预期；人工判定样本明确保留边界。
+- `scripts/validate.py`、`.github/workflows/validate.yml`：轻量本地检查与最小 CI。
+- `references/README.md`、`CHANGELOG.md`：来源身份、脱敏说明、规则演变与历史边界。
+
+[参考说明](references/README.md) 区分原始样本的结构依据、脱敏改编和新编教学内容。公开版本不保存私人来源全文或本机路径；私人原文可放入 `.local-sources/`，该目录已被忽略，测试与 CI 均不依赖它。
 
 ## 执行验证
 
-在 WSL2 Ubuntu 的项目目录执行。Markdown 检测仅需 Python 3.10+ 标准库；schema 和测试命令还需 PyYAML 与 jsonschema。本轮使用现有 Python 3.12.3 环境，未修改系统依赖。干净环境可自行建立虚拟环境：
+使用 Python 3.10+。Markdown 文件检查仅依赖标准库，schema 与测试还需要 PyYAML、jsonschema。已有依赖时直接执行下面两条验证命令；干净环境可以先创建虚拟环境并安装依赖。
 
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install PyYAML jsonschema
 .venv/bin/python scripts/validate.py --schema
 .venv/bin/python scripts/validate.py --test
-.venv/bin/python scripts/validate.py --strict STANDARD.md examples/good/compact.md
 ```
 
-已有依赖时直接使用 `python3 scripts/validate.py --test`。检查其他文件用 `python3 scripts/validate.py path/to/document.md`；支持多个文件，路径有空格时加引号。`--json` 输出带文件、行号、稳定规则编号与级别的数组；`--strict` 将 WARNING 也视为不通过。退出码 0 表示所选门槛通过，1 表示检测或测试不通过，2 表示输入或依赖错误。单独扫描坏例返回非零是预期行为；测试命令核对预期诊断后返回 PASS。
+检查文档用 `python scripts/validate.py document.md`，支持多个文件；`--json` 返回文件、行号、规则编号、级别与说明。默认仅 ERROR 导致检查失败，`--strict` 将 WARNING 也作为待解决项返回非零。退出码 0 是所选门槛通过，1 是检测或测试不通过，2 是输入或依赖错误。运行坏样本得到诊断是预期；fixture 测试比对这些诊断后仍应 PASS。
 
-Formatting Gate 输出标题跳级与密度提示；Render Gate 检查围栏、代码跨度、双星号、字段边界、缩进及简单表格。ERROR 表示违反受支持的明确约束；WARNING 是可疑结构，需人工判断；INFO 提醒检查未自动化的语义关系。原始 Inbox 字段仍能被 Markdown 渲染，但会显示字面星号，因此登记为 WARNING；真正丢失定界符的错误登记为 ERROR。
+`--test` 包含原有最小样本、字段修正回归、合法嵌套例外、schema 拒绝案例、规范版本独立性、双向样本引用、正文覆盖锚点、维护文档严格检查及公开工作树路径扫描。覆盖锚点只防止关键内容意外消失，不证明解释质量；工作树扫描也不是历史清理或完整隐私检测。GitHub Actions 在 push 和 pull request 时只安装必要依赖并执行 `--schema`、`--test`，没有发布流水线。
 
-## 检测范围与维护
+## 检测边界与版本维护
 
-检测器不是 Markdown AST，也不是渲染器认证。它支持普通正文、ATX 标题、反引号或波浪号围栏、不同长度代码跨度、显式转义及简单管线表格；只检查双星号强调，不检查单星号、下划线强调。HTML 评论被忽略；HTML 块、复杂引用/列表内围栏、Setext 标题、链接目标、数学扩展、复杂缩进续行与完整强调定界规则不在可靠检测范围。四空格非列表行按代码处理，可能漏检列表续行；文字中的管线在近似表格区域可能误报。
+Automatic Gate 检查规则数据、引用和支持范围内的闭合及表格形状；Heuristic Gate 提示短段、长段、留白、粗体伪标题、深缩进和边界疑点；Human Semantic Gate 判断并列、层级、段落职责、流程方向及交接完整性。完整清单在正式规范中，不把自然语言偏好全部变成数字阈值。
 
-密度阈值只用于提示：三个连续不超过 35 字符的正文段、超过 800 字符的正文段、连续三个空行、至少八列的列表缩进。它们不是正式段落长度、空白比例或嵌套上限。语义反例的测试只核对预期诊断与人工判定记录存在，不能声称自动证明了语义质量。Gold 摘录中合理短段也可能触发提示，应结合上下文复核。
+现有检测器支持普通正文、ATX 标题、反引号或波浪号围栏、不同长度代码跨度、显式转义和简单管线表格。它不是 Markdown AST：不完整处理单星号、下划线强调、HTML 块、链接目标、复杂引用/列表内围栏、Setext 标题和数学扩展；四空格非列表行按代码处理，可能漏检列表续行。可疑字段与合法嵌套仅警告，确定违反支持范围内的约束才报错；代码字面内容和不确定意图需要人工复核。
 
-更新时先对照来源提取并去重，再同步规范和规则登记，补充正反样本后执行完整测试。修改规则含义保留编号；合并时保留主编号并将已发布的被合并规则标为 deprecated，不复用旧编号。未经确认的想法留在提案或 experimental，不直接成为 active。测试会核对规则覆盖与首选动作文本，其他语义一致性仍需人工审读。当前无远端发布或自动修改文档功能。
+密度检测仍沿用既有提示参数：连续三个不超过 35 字符的正文段、超过 800 字符的正文段、连续三个空行、至少八列的列表缩进。它们不是正式段落上限，也不执行“2–5 段 / 3–6 句”或减少留白比例。发现误报时保留合法样本、缩小检测范围，不用删除测试或改写正确文档来迁就检测器。
+
+本轮从未编号 schema 迁移到 `schema_version: 1`，并将旧 `version` 字段改为 SemVer 字符串 `standard_version`；`examples` 改为 good/bad 两组路径。此结构迁移已在 CHANGELOG 记录。以后规范版本可独立提升，仅发生结构不兼容才改变 schema_version。规则编号保留，正文扩写不要求照抄登记表动作文本；语义变化需同步规则、例外、样本和版本说明。
+
+当前版本已移除私人快照，但首个提交 `7e49f6c` 仍保留旧内容，不能把本轮脱敏描述成完整公开历史清理。历史改写和 force push 需要单独确认；本轮只更新当前分支内容，不改变仓库可见性。

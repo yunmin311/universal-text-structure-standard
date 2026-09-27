@@ -77,7 +77,8 @@
         "line": 1,
         "severity": "WARNING"
       }
-    ]
+    ],
+    "reason": "脱敏最小复现保留文件名、代码、星号、冒号组合，不保留私人职责段落。"
   },
   {
     "file": "tests/fixtures/valid/project-inbox-fixed.md",
@@ -221,7 +222,17 @@
   },
   {
     "file": "tests/fixtures/valid/nested-bold-code.md",
-    "diagnostics": []
+    "diagnostics": [
+      {
+        "rule_id": "REN-004",
+        "line": 1,
+        "severity": "WARNING"
+      }
+    ],
+    "manual_review": [
+      "REN-004"
+    ],
+    "reason": "合法嵌套作为非默认例外，提示复核而非语法 ERROR。"
   },
   {
     "file": "tests/fixtures/valid/fenced-literals.md",
@@ -250,5 +261,51 @@
   {
     "file": "tests/fixtures/valid/literal-star-filename.md",
     "diagnostics": []
+  },
+  {
+    "file": "tests/fixtures/invalid/fragmented-explanation.md",
+    "diagnostics": [],
+    "manual_review": [
+      "SEM-001"
+    ],
+    "reason": "连续因果被拆成伪并列。"
+  },
+  {
+    "file": "tests/fixtures/invalid/unordered-steps.md",
+    "diagnostics": [],
+    "manual_review": [
+      "SEM-003"
+    ],
+    "reason": "后一步依赖前一步，应使用编号。"
+  },
+  {
+    "file": "tests/fixtures/invalid/comparison-in-prose.md",
+    "diagnostics": [],
+    "manual_review": [
+      "SEM-004"
+    ],
+    "reason": "共享稳定维度宜使用表格。"
+  },
+  {
+    "file": "tests/fixtures/invalid/prose-in-code.md",
+    "diagnostics": [],
+    "manual_review": [
+      "SEM-007"
+    ],
+    "reason": "普通解释不使用代码块。"
+  },
+  {
+    "file": "tests/fixtures/valid/semantic-field.md",
+    "diagnostics": []
+  },
+  {
+    "file": "tests/fixtures/valid/code-literal-odd-stars.md",
+    "diagnostics": [
+      {
+        "rule_id": "REN-005",
+        "line": 1,
+        "severity": "WARNING"
+      }
+    ]
   }
 ]
