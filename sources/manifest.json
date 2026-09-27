@@ -1,0 +1,50 @@
+{
+  "captured": "2026-09-27",
+  "sources": [
+    {
+      "snapshot": "request.md",
+      "original": "/mnt/c/Users/lqy/.codex/attachments/cb30b050-ea4e-411c-8638-5d8711b8b75f/已粘贴的文本.txt",
+      "sha256": "f540a9baaeb003df3238a49c93c2504f1b67937ba7c5a13c92d97e679684fe04"
+    },
+    {
+      "snapshot": "project-inbox.md",
+      "original": "/mnt/e/1obsidian/Obsidian Vault/project/Project Inbox.md",
+      "sha256": "6db40d0550bf47175b579ecb53f8e72ccae9936b336d933a4c125c6fa75c7e2b"
+    },
+    {
+      "snapshot": "voice-readme.md",
+      "original": "/mnt/e/1obsidian/Obsidian Vault/Compound Interest/Naming rights/VOICE_SYSTEM_V4_B_GRADE/README.md",
+      "sha256": "532fbc4f0918bb03e731bf157487909ba9e0d0f63654cae4ce6bd3618161ab37"
+    },
+    {
+      "snapshot": "custom-instructions-candidate.md",
+      "original": "/mnt/e/1project/DenseGPT/presets/chatgpt-custom-instructions.md",
+      "sha256": "8f624ad901476c56b7d649ff3a9a52e670fa1cc23b35f121777895bedff25c11"
+    },
+    {
+      "reference_only": "/mnt/e/1obsidian/Obsidian Vault/Compound Interest/Naming rights/VOICE_SYSTEM_V4_B_GRADE/01_声音与歌唱_从发声机制到声区共鸣与音色.md",
+      "sha256": "0adbed11aaa99651f203a50f85820427406de3d332a0facbda5300fc8eb816c5",
+      "scope": "仅结构参考，不将声音训练内容纳入通用规范"
+    },
+    {
+      "reference_only": "/mnt/e/1obsidian/Obsidian Vault/Compound Interest/Naming rights/VOICE_SYSTEM_V4_B_GRADE/02_普通话清晰度_构音声调语流与纠音.md",
+      "sha256": "de7dba63581023bda86c3c30f76cddb3ceeb8c2cfe54e6d0dafb9e3757c04abd",
+      "scope": "仅结构参考，不将声音训练内容纳入通用规范"
+    },
+    {
+      "reference_only": "/mnt/e/1obsidian/Obsidian Vault/Compound Interest/Naming rights/VOICE_SYSTEM_V4_B_GRADE/03_英语发音_音素重音节奏与连续语流.md",
+      "sha256": "894a3d8d16a3e892d1c7008db709f80be6fff2771925e07b50896ef9747811f0",
+      "scope": "仅结构参考，不将声音训练内容纳入通用规范"
+    },
+    {
+      "reference_only": "/mnt/e/1obsidian/Obsidian Vault/Compound Interest/Naming rights/VOICE_SYSTEM_V4_B_GRADE/04_训练与评估_计划测试排错与长期恢复.md",
+      "sha256": "55f2be21e8e20bc5c95d155ea49aec5e96b3577fd8b20b46f28db4fa264e30ef",
+      "scope": "仅结构参考，不将声音训练内容纳入通用规范"
+    },
+    {
+      "reference_only": "/mnt/e/1obsidian/Obsidian Vault/Compound Interest/Naming rights/VOICE_SYSTEM_V4_B_GRADE/VOICE_STATE.yaml",
+      "sha256": "55af1813b0939be77e6718040ac9d4860a58771680124ea15470bfa381b9ee4d",
+      "scope": "仅结构参考，不将声音训练内容纳入通用规范"
+    }
+  ]
+}

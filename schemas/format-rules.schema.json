@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "version",
+    "rules"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "0.1.0"
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "rule_id",
+          "title",
+          "condition",
+          "preferred_action",
+          "category",
+          "severity",
+          "status",
+          "validation_method",
+          "forbidden_pattern",
+          "exceptions",
+          "examples",
+          "sources"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "pattern": "^(SEM|PRE|REN)-[0-9]{3}$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "condition": {
+            "type": "string",
+            "minLength": 1
+          },
+          "preferred_action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "category": {
+            "enum": [
+              "semantic",
+              "presentation",
+              "render_safety"
+            ]
+          },
+          "severity": {
+            "enum": [
+              "ERROR",
+              "WARNING",
+              "INFO"
+            ]
+          },
+          "status": {
+            "enum": [
+              "active",
+              "experimental",
+              "deprecated"
+            ]
+          },
+          "validation_method": {
+            "enum": [
+              "static",
+              "heuristic",
+              "manual"
+            ]
+          },
+          "forbidden_pattern": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "exceptions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "examples": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "sources": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "category": {
+                  "const": "semantic"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "rule_id": {
+                  "pattern": "^SEM-[0-9]{3}$"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "category": {
+                  "const": "presentation"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "rule_id": {
+                  "pattern": "^PRE-[0-9]{3}$"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "category": {
+                  "const": "render_safety"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "rule_id": {
+                  "pattern": "^REN-[0-9]{3}$"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

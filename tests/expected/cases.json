@@ -1,0 +1,254 @@
+[
+  {
+    "file": "tests/fixtures/invalid/broken-emphasis.md",
+    "diagnostics": [
+      {
+        "rule_id": "REN-001",
+        "line": 1,
+        "severity": "ERROR"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/inline-unclosed.md",
+    "diagnostics": [
+      {
+        "rule_id": "REN-002",
+        "line": 1,
+        "severity": "ERROR"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/fence-unclosed.md",
+    "diagnostics": [
+      {
+        "rule_id": "REN-003",
+        "line": 1,
+        "severity": "ERROR"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/fence-mismatch.md",
+    "diagnostics": [
+      {
+        "rule_id": "REN-003",
+        "line": 1,
+        "severity": "ERROR"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/field-colon.md",
+    "diagnostics": [
+      {
+        "rule_id": "REN-004",
+        "line": 1,
+        "severity": "WARNING"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/bold-code-crossing.md",
+    "diagnostics": [
+      {
+        "rule_id": "REN-001",
+        "line": 1,
+        "severity": "ERROR"
+      },
+      {
+        "rule_id": "REN-005",
+        "line": 1,
+        "severity": "WARNING"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/project-inbox-regression.md",
+    "diagnostics": [
+      {
+        "rule_id": "REN-004",
+        "line": 1,
+        "severity": "WARNING"
+      },
+      {
+        "rule_id": "REN-005",
+        "line": 1,
+        "severity": "WARNING"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/valid/project-inbox-fixed.md",
+    "diagnostics": []
+  },
+  {
+    "file": "tests/fixtures/invalid/deep-list.md",
+    "diagnostics": [
+      {
+        "rule_id": "REN-006",
+        "line": 3,
+        "severity": "WARNING"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/heading-jump.md",
+    "diagnostics": [
+      {
+        "rule_id": "SEM-005",
+        "line": 3,
+        "severity": "WARNING"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/table-separator.md",
+    "diagnostics": [
+      {
+        "rule_id": "REN-007",
+        "line": 2,
+        "severity": "ERROR"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/table-columns.md",
+    "diagnostics": [
+      {
+        "rule_id": "REN-007",
+        "line": 3,
+        "severity": "ERROR"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/table-missing-separator.md",
+    "diagnostics": [
+      {
+        "rule_id": "REN-007",
+        "line": 2,
+        "severity": "ERROR"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/micro-paragraphs.md",
+    "diagnostics": [
+      {
+        "rule_id": "PRE-001",
+        "line": 5,
+        "severity": "WARNING"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/fake-bold-headings.md",
+    "diagnostics": [
+      {
+        "rule_id": "PRE-004",
+        "line": 1,
+        "severity": "WARNING"
+      },
+      {
+        "rule_id": "PRE-004",
+        "line": 5,
+        "severity": "WARNING"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/parallel-in-prose.md",
+    "diagnostics": [],
+    "manual_review": [
+      "SEM-002"
+    ],
+    "reason": "三个独立能力需要被逐项查找；改为并列列表。检测器不推断语义。"
+  },
+  {
+    "file": "tests/fixtures/invalid/unnecessary-nesting.md",
+    "diagnostics": [],
+    "manual_review": [
+      "SEM-006"
+    ],
+    "reason": "三个能力彼此并列，缩进捏造从属关系。"
+  },
+  {
+    "file": "tests/fixtures/invalid/whitespace-abuse.md",
+    "diagnostics": [
+      {
+        "rule_id": "PRE-003",
+        "line": 4,
+        "severity": "WARNING"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/text-wall.md",
+    "diagnostics": [
+      {
+        "rule_id": "PRE-002",
+        "line": 1,
+        "severity": "WARNING"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/invalid/meaningless-headings.md",
+    "diagnostics": [],
+    "manual_review": [
+      "SEM-005",
+      "PRE-004"
+    ],
+    "reason": "标题不能帮助定位实际主题；应合并正文或使用真实主题名。"
+  },
+  {
+    "file": "tests/fixtures/invalid/short-flow-vertical.md",
+    "diagnostics": [],
+    "manual_review": [
+      "PRE-005"
+    ],
+    "reason": "没有分支与长节点的短链可横向表达。"
+  },
+  {
+    "file": "tests/fixtures/valid/literal-code.md",
+    "diagnostics": []
+  },
+  {
+    "file": "tests/fixtures/valid/multiline-spans.md",
+    "diagnostics": []
+  },
+  {
+    "file": "tests/fixtures/valid/nested-bold-code.md",
+    "diagnostics": []
+  },
+  {
+    "file": "tests/fixtures/valid/fenced-literals.md",
+    "diagnostics": []
+  },
+  {
+    "file": "tests/fixtures/valid/table-escaped.md",
+    "diagnostics": []
+  },
+  {
+    "file": "tests/fixtures/valid/table-no-outer-pipes.md",
+    "diagnostics": []
+  },
+  {
+    "file": "tests/fixtures/valid/indent-and-comment.md",
+    "diagnostics": []
+  },
+  {
+    "file": "tests/fixtures/valid/heading-return.md",
+    "diagnostics": []
+  },
+  {
+    "file": "tests/fixtures/valid/emphasis-in-prose.md",
+    "diagnostics": []
+  },
+  {
+    "file": "tests/fixtures/valid/literal-star-filename.md",
+    "diagnostics": []
+  }
+]

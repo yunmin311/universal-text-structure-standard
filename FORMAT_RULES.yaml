@@ -1,0 +1,325 @@
+version: 0.1.0
+rules:
+- rule_id: SEM-001
+  category: semantic
+  title: 连续解释用正文
+  severity: INFO
+  condition: 主题需要先建立认知或解释因果
+  preferred_action: 先写完整介绍段；同一论点用连贯自然段承载
+  forbidden_pattern:
+  - 把连续解释拆成 bullet 或碎句
+  exceptions:
+  - 真实并列属性转列表
+  validation_method: manual
+  examples:
+  - examples/good/project-inbox.md
+  status: active
+  sources:
+  - request.md
+  - voice-readme.md
+- rule_id: SEM-002
+  category: semantic
+  title: 并列信息用列表
+  severity: INFO
+  condition: 属性、能力、边界等可独立并列
+  preferred_action: 用紧凑 bullet 显示并列关系
+  forbidden_pattern:
+  - 将多个独立属性挤入长句
+  exceptions:
+  - 少量短枚举可留在句内
+  validation_method: manual
+  examples:
+  - examples/good/project-inbox.md
+  status: active
+  sources:
+  - request.md
+  - voice-readme.md
+- rule_id: SEM-003
+  category: semantic
+  title: 顺序与有限状态用编号
+  severity: INFO
+  condition: 执行顺序、优先级或严格有限状态需要明确枚举
+  preferred_action: 用编号并说明顺序或枚举含义
+  forbidden_pattern:
+  - 无顺序并列信息伪装成步骤
+  exceptions:
+  - 有限状态编号不自动代表时间顺序
+  validation_method: manual
+  examples:
+  - examples/good/project-inbox.md
+  status: active
+  sources:
+  - request.md
+  - voice-readme.md
+- rule_id: SEM-004
+  category: semantic
+  title: 稳定比较用表格
+  severity: INFO
+  condition: 多个对象共享可比较字段或需要状态总览
+  preferred_action: 将对象与稳定字段放入表格
+  forbidden_pattern:
+  - 把长篇连续推理塞入表格
+  exceptions:
+  - 单个对象的说明可用正文或列表
+  validation_method: manual
+  examples:
+  - examples/good/project-inbox.md
+  status: active
+  sources:
+  - request.md
+  - voice-readme.md
+- rule_id: SEM-005
+  category: semantic
+  title: 标题表达真实层级
+  severity: WARNING
+  condition: 内容存在可独立定位的章节与子主题
+  preferred_action: 大章节用二级标题；稳定子主题用三级标题；保持真实父子层级
+  forbidden_pattern:
+  - 空泛标题、逐条规则升级标题、跳级
+  exceptions:
+  - 文档标题可用一级；独立摘录可从二级开始
+  validation_method: static
+  examples:
+  - examples/good/project-inbox.md
+  status: active
+  sources:
+  - request.md
+  - voice-readme.md
+- rule_id: SEM-006
+  category: semantic
+  title: 嵌套表达真实从属
+  severity: INFO
+  condition: 列表项确实包含子项
+  preferred_action: 只有父子关系才嵌套
+  forbidden_pattern:
+  - 为装饰或缩进而嵌套并列项
+  exceptions:
+  - 多层真实从属可保留并人工复核
+  validation_method: manual
+  examples:
+  - examples/good/project-inbox.md
+  status: active
+  sources:
+  - request.md
+  - voice-readme.md
+- rule_id: SEM-007
+  category: semantic
+  title: 关系链与文件树各用其形
+  severity: INFO
+  condition: 需要表达流转、关系或目录归属
+  preferred_action: 关系用箭头链；文件结构用 tree；放入代码块保留对齐
+  forbidden_pattern:
+  - 把目录归属画成时间流程
+  exceptions:
+  - 普通文件名无需树形结构
+  validation_method: manual
+  examples:
+  - examples/good/project-inbox.md
+  status: active
+  sources:
+  - request.md
+  - voice-readme.md
+- rule_id: PRE-001
+  category: presentation
+  title: 保留完整段落
+  severity: WARNING
+  condition: 一个主题被连续短段切碎
+  preferred_action: 合并同一主题的 micro paragraphs；保留论证
+  forbidden_pattern:
+  - 每句话独占一段
+  exceptions:
+  - 真正主题切换、独立结论允许短段
+  validation_method: heuristic
+  examples:
+  - examples/good/compact.md
+  status: active
+  sources:
+  - request.md
+  - voice-readme.md
+- rule_id: PRE-002
+  category: presentation
+  title: 避免文字墙
+  severity: WARNING
+  condition: 正文密集到难以定位关系
+  preferred_action: 按真实语义分段；并列转列表；比较转表格
+  forbidden_pattern:
+  - 只为紧凑把不同关系揉成长段
+  exceptions:
+  - 完整复杂论证可保持长段
+  validation_method: heuristic
+  examples:
+  - examples/good/compact.md
+  status: active
+  sources:
+  - request.md
+  - voice-readme.md
+- rule_id: PRE-003
+  category: presentation
+  title: 空白与列表紧凑
+  severity: WARNING
+  condition: 需要分隔块而非制造大片留白
+  preferred_action: 块之间留必要空行；简单列表项连续排列
+  forbidden_pattern:
+  - 连续空行、简单列表逐项空一行
+  exceptions:
+  - 多段列表项及渲染需要的空行保留
+  validation_method: heuristic
+  examples:
+  - examples/good/compact.md
+  status: active
+  sources:
+  - request.md
+  - voice-readme.md
+- rule_id: PRE-004
+  category: presentation
+  title: 减少无意义标题与粗体伪标题
+  severity: WARNING
+  condition: 强调、字段标签和章节标题需要区分
+  preferred_action: 少量真实章节；字段标签与说明同段；粗体只突出重点
+  forbidden_pattern:
+  - 独立粗体行充当密集伪标题
+  exceptions:
+  - 确有结构价值的标题按 SEM-005 保留
+  validation_method: heuristic
+  examples:
+  - examples/good/compact.md
+  status: active
+  sources:
+  - request.md
+  - voice-readme.md
+- rule_id: PRE-005
+  category: presentation
+  title: 短链横向长流程纵向
+  severity: INFO
+  condition: 需要展示关系链或 pipeline
+  preferred_action: 短链横向；长且难读或含分支的流程纵向
+  forbidden_pattern:
+  - 短链机械拆成多行
+  exceptions:
+  - 按实际可读性判断；不设固定节点数
+  validation_method: manual
+  examples:
+  - examples/good/project-inbox.md
+  status: active
+  sources:
+  - request.md
+  - voice-readme.md
+- rule_id: REN-001
+  category: render_safety
+  title: 粗体标记成对
+  severity: ERROR
+  condition: 正文使用双星号强调
+  preferred_action: 闭合双星号并保持正确边界
+  forbidden_pattern:
+  - 孤立或未闭合双星号
+  exceptions:
+  - 代码与转义中的字面星号不作为强调
+  validation_method: static
+  examples:
+  - examples/good/compact.md
+  status: active
+  sources:
+  - request.md
+  - project-inbox.md
+- rule_id: REN-002
+  category: render_safety
+  title: 行内代码闭合
+  severity: ERROR
+  condition: 文件名、标识符或命令使用反引号
+  preferred_action: 用相同长度的反引号闭合代码跨度
+  forbidden_pattern:
+  - 缺少结束反引号
+  exceptions:
+  - 代码内容可含较短反引号；跨度可跨同一段的换行
+  validation_method: static
+  examples:
+  - examples/good/compact.md
+  status: active
+  sources:
+  - request.md
+  - project-inbox.md
+- rule_id: REN-003
+  category: render_safety
+  title: 代码围栏闭合
+  severity: ERROR
+  condition: 使用代码块保留命令、流程或树形
+  preferred_action: 使用相同字符且长度不少于起始围栏的结束围栏
+  forbidden_pattern:
+  - 围栏未闭合或错用字符
+  exceptions:
+  - 围栏内容按字面处理
+  validation_method: static
+  examples:
+  - examples/good/compact.md
+  status: active
+  sources:
+  - request.md
+  - project-inbox.md
+- rule_id: REN-004
+  category: render_safety
+  title: 字段冒号与粗体边界一致
+  severity: WARNING
+  condition: 字段标签采用加粗形式
+  preferred_action: 使用 **字段：** 内容；文件名可用 **`file.yaml`：** 内容
+  forbidden_pattern:
+  - 冒号单独加粗、字段闭合符错位
+  exceptions:
+  - 普通正文中的冒号无需加粗
+  validation_method: static
+  examples:
+  - examples/good/compact.md
+  status: active
+  sources:
+  - request.md
+  - project-inbox.md
+- rule_id: REN-005
+  category: render_safety
+  title: 避免粗体与代码交叉
+  severity: WARNING
+  condition: 同一字段同时使用强调与行内代码
+  preferred_action: 代码跨度完整嵌入粗体或单独使用代码
+  forbidden_pattern:
+  - 将强调定界符藏进代码或跨越代码边界
+  exceptions:
+  - 代码教学中展示星号是合法字面内容；上下文人工复核
+  validation_method: static
+  examples:
+  - examples/good/compact.md
+  status: active
+  sources:
+  - request.md
+  - project-inbox.md
+- rule_id: REN-006
+  category: render_safety
+  title: 列表缩进可解释
+  severity: WARNING
+  condition: 列表有嵌套或续行
+  preferred_action: 缩进对应父项内容起点；过深时复核真实从属
+  forbidden_pattern:
+  - 无法解释的缩进层级、过深嵌套
+  exceptions:
+  - 复杂真实层级允许人工确认；不统一强制两空格
+  validation_method: heuristic
+  examples:
+  - examples/good/compact.md
+  status: active
+  sources:
+  - request.md
+  - project-inbox.md
+- rule_id: REN-007
+  category: render_safety
+  title: 表格分隔与列数匹配
+  severity: ERROR
+  condition: 使用管线式 Markdown 表格
+  preferred_action: 表头、分隔行、数据行列数一致；分隔单元使用连字符
+  forbidden_pattern:
+  - 缺少或非法分隔行、明显列数不一致
+  exceptions:
+  - 转义管线不分列；本版本仅覆盖简单管线表格
+  validation_method: static
+  examples:
+  - examples/good/compact.md
+  status: active
+  sources:
+  - request.md
+  - project-inbox.md
