@@ -264,7 +264,7 @@ def test_all():
         ok = all(anchor in standard for anchor in anchors)
         failures += not ok
         print(('PASS' if ok else 'FAIL') + ' policy coverage: ' + topic)
-    public_files = [ROOT / name for name in ['README.md', 'STANDARD.md', 'CHANGELOG.md', 'references/README.md']]
+    public_files = [ROOT / name for name in ['README.md', 'STANDARD.md', 'CHANGELOG.md', 'references/README.md', 'USAGE.md', 'evaluations/long-form-review.md']]
     public_files += list((ROOT / 'examples/good').glob('*.md'))
     clean_docs = all(not scan(file.read_text()) for file in public_files)
     failures += not clean_docs
@@ -318,7 +318,12 @@ def main():
                 print(f'{d["severity"]} {d["file"]}:{d["line"]} {d["rule_id"]} {d["message"]}')
             if args.paths:
                 print('INFO 人工检查：语义选择、真实从属、标题价值、流程方向；静态通过不代表全文合规。')
-                print(f'ERROR={sum(d["severity"] == "ERROR" for d in findings)} WARNING={sum(d["severity"] == "WARNING" for d in findings)}')
+                errors = sum(d['severity'] == 'ERROR' for d in findings)
+                warnings = sum(d['severity'] == 'WARNING' for d in findings)
+                status = 'BLOCKED' if errors else 'REVIEW_REQUIRED' if warnings else 'STATIC_CLEAN'
+                print(f'{status} ERROR={errors} WARNING={warnings} SEMANTIC=NOT_EVALUATED')
+                if warnings and not args.strict:
+                    print('INFO 当前为诊断模式，退出码 0 不代表可交付；交付检查请使用 --strict。')
         if not (args.schema or args.test or args.paths):
             parser.error('请提供文件，或使用 --schema / --test')
         return int(any(d['severity'] == 'ERROR' or args.strict for d in findings))

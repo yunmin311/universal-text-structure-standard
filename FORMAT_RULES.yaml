@@ -1,4 +1,4 @@
-standard_version: 0.2.0
+standard_version: 0.3.0
 schema_version: 1
 rules:
 - rule_id: SEM-001
@@ -14,9 +14,11 @@ rules:
   validation_method: manual
   examples:
     good:
+    - examples/good/self-attention.md
     - examples/good/project-inbox.md
     - examples/good/technical-handoff.md
     bad:
+    - examples/bad/block-fragmentation.md
     - examples/bad/fragmented-explanation.md
   status: active
   sources:
@@ -30,7 +32,7 @@ rules:
   forbidden_pattern:
   - 将多个独立属性挤入长句
   exceptions:
-  - 短枚举可横向；六项以上考虑重组，必要的完整枚举保留
+  - 短枚举可横向；长列表考虑重组，必要的完整枚举保留
   validation_method: manual
   examples:
     good:
@@ -75,6 +77,7 @@ rules:
   validation_method: manual
   examples:
     good:
+    - examples/good/self-attention.md
     - examples/good/project-inbox.md
     - examples/good/technical-handoff.md
     bad:
@@ -95,10 +98,12 @@ rules:
   validation_method: static
   examples:
     good:
+    - examples/good/self-attention.md
     - examples/good/project-inbox.md
     - examples/good/technical-handoff.md
     - examples/good/workflow.md
     bad:
+    - examples/bad/block-fragmentation.md
     - examples/bad/meaningless-headings.md
   status: active
   sources:
@@ -135,8 +140,10 @@ rules:
   validation_method: manual
   examples:
     good:
+    - examples/good/self-attention.md
     - examples/good/workflow.md
     bad:
+    - examples/bad/block-fragmentation.md
     - examples/bad/prose-in-code.md
   status: active
   sources:
@@ -146,7 +153,7 @@ rules:
   title: 保留完整段落
   severity: WARNING
   condition: 一个主题被连续短段切碎
-  preferred_action: 合并同一主题的 micro paragraphs；保留论证
+  preferred_action: 合并同一主题的 micro paragraphs 及无意义块分割；保留论证
   forbidden_pattern:
   - 每句话独占一段
   exceptions:
@@ -154,10 +161,12 @@ rules:
   validation_method: heuristic
   examples:
     good:
+    - examples/good/self-attention.md
     - examples/good/compact.md
     - examples/good/project-inbox.md
     - examples/good/technical-handoff.md
     bad:
+    - examples/bad/block-fragmentation.md
     - examples/bad/micro-paragraphs.md
   status: active
   sources:
@@ -175,6 +184,7 @@ rules:
   validation_method: heuristic
   examples:
     good:
+    - examples/good/self-attention.md
     - examples/good/compact.md
     - examples/good/project-inbox.md
     - examples/good/technical-handoff.md
@@ -192,14 +202,16 @@ rules:
   forbidden_pattern:
   - 连续空行、简单列表逐项空一行
   exceptions:
-  - 复杂列表与渲染必需间隔保留；减少 70–80% 无用留白仅是方向
+  - 复杂列表与渲染必需间隔保留；不设空白比例目标
   validation_method: heuristic
   examples:
     good:
+    - examples/good/self-attention.md
     - examples/good/compact.md
     - examples/good/project-inbox.md
     - examples/good/workflow.md
     bad:
+    - examples/bad/block-fragmentation.md
     - examples/bad/whitespace-abuse.md
   status: active
   sources:

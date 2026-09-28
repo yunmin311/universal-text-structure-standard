@@ -18,3 +18,5 @@ jobs:
         run: python scripts/validate.py --schema
       - name: Run fixture and maintenance checks
         run: python scripts/validate.py --test
+      - name: Run CLI and published example tests
+        run: python -m unittest discover -s tests -p "test_*.py"

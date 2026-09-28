@@ -1,6 +1,8 @@
 # universal-text-structure-standard
 
-通用文本结构与排版规范，当前版本 0.2.0。先读 [STANDARD.md](STANDARD.md)：它独立解释 Chat Mode、Document Mode、完整段落、真实层级、技术文档组织与输出前检查。[FORMAT_RULES.yaml](FORMAT_RULES.yaml) 保存 19 个稳定规则编号及检测映射，供工具使用，不是第二份写作长文。
+通用文本结构与排版规范，当前版本 0.3.0。先读 [STANDARD.md](STANDARD.md)：它独立解释 Chat Mode、Document Mode、完整段落、真实层级、技术文档组织与输出前检查。[FORMAT_RULES.yaml](FORMAT_RULES.yaml) 保存 19 个稳定规则编号及检测映射，供工具使用，不是第二份写作长文。
+
+长篇任务从 [USAGE.md](USAGE.md) 进入：先读规范，再看[完整 Self-Attention 修订例](examples/good/self-attention.md)，写完后实际修订并验收。[本轮记录](evaluations/long-form-review.md)保留失败依据、改写对照和验证边界；不能再用短交接样本通过推断长文可用。
 
 ## 使用与资产职责
 
@@ -8,7 +10,7 @@
 
 - `STANDARD.md`：完整执行条件、模式差异、例外、Formatting Gate 与 Render Gate。
 - `FORMAT_RULES.yaml`、`schemas/format-rules.schema.json`：简短约束、字段契约、版本和 good/bad 映射。
-- `examples/good/`：两份脱敏 Gold 改编、一份仓库技术交接教学样本和一个简短局部示例；不是固定模板。
+- `examples/good/`：两份脱敏 Gold 改编、仓库编写的长篇教学与技术交接示例，以及一个简短局部示例；不是固定模板。
 - `examples/bad/`、`tests/fixtures/`、`tests/expected/`：带规则编号的反例、稳定测试输入及预期；人工判定样本明确保留边界。
 - `scripts/validate.py`、`.github/workflows/validate.yml`：轻量本地检查与最小 CI。
 - `references/README.md`、`CHANGELOG.md`：来源身份、脱敏说明、规则演变与历史边界。
@@ -24,11 +26,12 @@ python3 -m venv .venv
 .venv/bin/python -m pip install PyYAML jsonschema
 .venv/bin/python scripts/validate.py --schema
 .venv/bin/python scripts/validate.py --test
+.venv/bin/python -m unittest discover -s tests -p 'test_*.py'
 ```
 
-检查文档用 `python scripts/validate.py document.md`，支持多个文件；`--json` 返回文件、行号、规则编号、级别与说明。默认仅 ERROR 导致检查失败，`--strict` 将 WARNING 也作为待解决项返回非零。退出码 0 是所选门槛通过，1 是检测或测试不通过，2 是输入或依赖错误。运行坏样本得到诊断是预期；fixture 测试比对这些诊断后仍应 PASS。
+交付检查用 `python3 scripts/validate.py --strict document.md`，支持多个文件；`--json` 返回文件、行号、规则编号、级别与说明。默认仅 ERROR 导致检查失败，`--strict` 将 WARNING 也作为待解决项返回非零。诊断输出明确区分 BLOCKED、REVIEW_REQUIRED、STATIC_CLEAN，且始终显示 SEMANTIC=NOT_EVALUATED。不带 `--strict` 的调用只用于收集诊断，不能把带警告的退出码 0 当成可交付。退出码 0 是所选门槛通过，1 是检测或测试不通过，2 是输入或依赖错误。运行坏样本得到诊断是预期；fixture 测试比对这些诊断后仍应 PASS。
 
-`--test` 包含原有最小样本、字段修正回归、合法嵌套例外、schema 拒绝案例、规范版本独立性、双向样本引用、正文覆盖锚点、维护文档严格检查及公开工作树路径扫描。覆盖锚点只防止关键内容意外消失，不证明解释质量；工作树扫描也不是历史清理或完整隐私检测。GitHub Actions 在 push 和 pull request 时只安装必要依赖并执行 `--schema`、`--test`，没有发布流水线。
+`--test` 包含原有最小样本、字段修正回归、合法嵌套例外、schema 拒绝案例、规范版本独立性、双向样本引用、正文覆盖锚点、维护文档严格检查及公开工作树路径扫描。覆盖锚点只防止关键内容意外消失，不证明解释质量；工作树扫描也不是历史清理或完整隐私检测。GitHub Actions 在 push 和 pull request 时只安装必要依赖并执行 `--schema`、`--test` 与 CLI / 示例执行回归，没有发布流水线。
 
 ## 检测边界与版本维护
 
@@ -38,6 +41,6 @@ Automatic Gate 检查规则数据、引用和支持范围内的闭合及表格�
 
 密度检测仍沿用既有提示参数：连续三个不超过 35 字符的正文段、超过 800 字符的正文段、连续三个空行、至少八列的列表缩进。它们不是正式段落上限，也不执行“2–5 段 / 3–6 句”或减少留白比例。发现误报时保留合法样本、缩小检测范围，不用删除测试或改写正确文档来迁就检测器。
 
-本轮从未编号 schema 迁移到 `schema_version: 1`，并将旧 `version` 字段改为 SemVer 字符串 `standard_version`；`examples` 改为 good/bad 两组路径。此结构迁移已在 CHANGELOG 记录。以后规范版本可独立提升，仅发生结构不兼容才改变 schema_version。规则编号保留，正文扩写不要求照抄登记表动作文本；语义变化需同步规则、例外、样本和版本说明。
+0.2.0 从未编号 schema 迁移到 `schema_version: 1`，并将旧 `version` 字段改为 SemVer 字符串 `standard_version`；`examples` 改为 good/bad 两组路径。此结构迁移已在 CHANGELOG 记录。以后规范版本可独立提升，仅发生结构不兼容才改变 schema_version。规则编号保留，正文扩写不要求照抄登记表动作文本；语义变化需同步规则、例外、样本和版本说明。
 
 当前版本已移除私人快照，但首个提交 `7e49f6c` 仍保留旧内容，不能把本轮脱敏描述成完整公开历史清理。历史改写和 force push 需要单独确认；本轮只更新当前分支内容，不改变仓库可见性。
