@@ -1,4 +1,4 @@
-standard_version: 0.3.1
+standard_version: 0.3.2
 schema_version: 1
 rules:
 - rule_id: SEM-001
@@ -77,6 +77,7 @@ rules:
   validation_method: manual
   examples:
     good:
+    - examples/good/compact.md
     - examples/good/self-attention.md
     - examples/good/project-inbox.md
     - examples/good/technical-handoff.md
@@ -132,7 +133,7 @@ rules:
   title: 精确内容与关系结构各用其形
   severity: INFO
   condition: 需要表达流转、关系或目录归属
-  preferred_action: 关系用箭头，目录用 tree；仅需保留格式时使用代码块
+  preferred_action: 先判断是否必须保留逐行布局；普通解释、短条件与短链回正文，共享字段用表格，真实代码保留围栏
   forbidden_pattern:
   - 把目录归属画成时间流程
   exceptions:
@@ -140,6 +141,7 @@ rules:
   validation_method: manual
   examples:
     good:
+    - examples/good/compact.md
     - examples/good/self-attention.md
     - examples/good/workflow.md
     bad:
@@ -198,7 +200,7 @@ rules:
   title: 空白与列表紧凑
   severity: WARNING
   condition: 需要分隔块而非制造大片留白
-  preferred_action: 块之间留必要空行；简单列表项连续排列
+  preferred_action: 同组内容靠近；复核全文后半篇的短块堆叠，简单列表项连续排列
   forbidden_pattern:
   - 连续空行、简单列表逐项空一行
   exceptions:
@@ -251,6 +253,7 @@ rules:
   validation_method: manual
   examples:
     good:
+    - examples/good/compact.md
     - examples/good/workflow.md
     bad:
     - examples/bad/short-flow-vertical.md
