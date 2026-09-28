@@ -1,4 +1,4 @@
-standard_version: 0.3.2
+standard_version: 0.3.3
 schema_version: 1
 rules:
 - rule_id: SEM-001
@@ -6,7 +6,7 @@ rules:
   title: 连续解释用正文
   severity: INFO
   condition: 主题需要先建立认知或解释因果
-  preferred_action: 按 Chat / Document 模式给出最小充分解释；完整观点用连续正文承载
+  preferred_action: 按模式保留充分解释；学习笔记讲清机制、完整例子与边界，不用术语压缩串替代推理
   forbidden_pattern:
   - 把连续解释拆成 bullet 或碎句
   exceptions:
@@ -91,7 +91,7 @@ rules:
   title: 标题表达真实层级
   severity: WARNING
   condition: 内容存在可独立定位的章节与子主题
-  preferred_action: Chat 保留必要分区；Document 通常二/三级，少数第四级
+  preferred_action: Chat 保留必要分区；Document 支持中文大章与章内独立编号的小标题，不按数量造层级
   forbidden_pattern:
   - 空泛标题、逐条规则升级标题、跳级
   exceptions:
@@ -223,7 +223,7 @@ rules:
   title: 减少无意义标题与粗体伪标题
   severity: WARNING
   condition: 强调、字段标签和章节标题需要区分
-  preferred_action: 少量真实章节；字段标签与说明同段；粗体只突出重点
+  preferred_action: 保留真实讲解模块；字段与说明同段，粗体仅少量锚点，不逐段标重点
   forbidden_pattern:
   - 独立粗体行充当密集伪标题
   exceptions:
