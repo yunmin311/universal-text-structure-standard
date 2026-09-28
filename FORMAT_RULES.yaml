@@ -1,4 +1,4 @@
-standard_version: 0.3.3
+standard_version: 0.3.4
 schema_version: 1
 rules:
 - rule_id: SEM-001
@@ -27,8 +27,8 @@ rules:
   category: semantic
   title: 并列信息用列表
   severity: INFO
-  condition: 属性、能力、边界等可独立并列
-  preferred_action: 用完整信息单元表达真实并列；长列表复核分组
+  condition: 同层信息需要独立查找、核对或执行
+  preferred_action: 需要逐项使用时才列点；连续解释留正文，长列表复核分组
   forbidden_pattern:
   - 将多个独立属性挤入长句
   exceptions:
@@ -91,7 +91,7 @@ rules:
   title: 标题表达真实层级
   severity: WARNING
   condition: 内容存在可独立定位的章节与子主题
-  preferred_action: Chat 保留必要分区；Document 支持中文大章与章内独立编号的小标题，不按数量造层级
+  preferred_action: 小标题须有独立导航与展开职责；同一解释连续写，中文大章下仅在必要时独立编号
   forbidden_pattern:
   - 空泛标题、逐条规则升级标题、跳级
   exceptions:

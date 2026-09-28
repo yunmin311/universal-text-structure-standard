@@ -108,6 +108,15 @@ def scan(text):
     if fence:
         emit('REN-003', fence[2], 'ERROR', '代码围栏未闭合')
 
+    # A blank gap between adjacent one-line items makes a simple list loose.
+    # Fenced/indented code is masked in visible; multi-paragraph items are not matched.
+    item = re.compile(r'^( {0,3})(?:[-+*]|\d+[.)]) +\S')
+    for i in range(1, len(visible) - 1):
+        before, after = item.match(visible[i - 1]), item.match(visible[i + 1])
+        if (before and after and before[1] == after[1]
+                and not lines[i].strip()):
+            emit('PRE-003', i + 1, 'WARNING', '简单列表项之间有空行；合并同组短项，真实多段项目保留必要间隔')
+
     # Parse code spans within a paragraph, allowing multiline spans and variable delimiters.
     body = '\n'.join(visible)
     for number, line in enumerate(visible, 1):

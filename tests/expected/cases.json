@@ -307,5 +307,23 @@
         "severity": "WARNING"
       }
     ]
+  },
+  {
+    "file": "tests/fixtures/invalid/loose-simple-list.md",
+    "diagnostics": [
+      {
+        "rule_id": "PRE-003",
+        "line": 2,
+        "severity": "WARNING"
+      }
+    ]
+  },
+  {
+    "file": "tests/fixtures/valid/multiparagraph-list.md",
+    "diagnostics": []
+  },
+  {
+    "file": "tests/fixtures/valid/list-in-fence.md",
+    "diagnostics": []
   }
 ]
