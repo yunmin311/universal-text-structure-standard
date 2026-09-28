@@ -149,7 +149,12 @@ def scan(text):
 
     def cells(line):
         # GFM pipes inside inline code still require escaping; escapes already masked.
-        return [c.strip() for c in line.strip().strip('|').split('|')]
+        content = line.strip()
+        if content.startswith('|'):
+            content = content[1:]
+        if content.endswith('|'):
+            content = content[:-1]
+        return [c.strip() for c in content.split('|')]
     i = 0
     while i < len(visible):
         if '|' not in visible[i]:
