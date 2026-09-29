@@ -1,4 +1,4 @@
-standard_version: 0.3.8
+standard_version: 0.3.9
 schema_version: 1
 rules:
 - rule_id: SEM-001
