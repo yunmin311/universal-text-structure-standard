@@ -43,3 +43,7 @@
 ## 只读参考的课程笔记规范
 
 本轮只读参考 [ym-obsidian-course-notes-standard](https://github.com/yunmin311/ym-obsidian-course-notes-standard/tree/54d1362aa4d5c4e875c973b9da1f78b70b729730)，重点为正文写作、内容类型选择矩阵、公式与代码章节。吸收的是按信息任务选格式、第一次教学由正文承担、公式与意义一起解释的原则；不复制其课程目录、打包、状态文件和图片工作流，也不修改该参考仓库。其 README 与模板用于理解职责，未将模板占位内容当成实际课程 Gold。
+
+## 1.0.0 语言编辑来源
+
+本轮将用户确认的结构作为基线，参考两份 Humanizer 与 Google 写作指南，仅纳入机械重复、证据范围和局部润色的编辑判断。固定版本链接、采用边界与中文对照保存在[语言风格校准记录](../evaluations/language-style-review.md#参考文献与来源)。外部 skill 作为参考资料读取，不安装、不整套执行；不引入其格式改造或检测评分流程。
