@@ -1,4 +1,4 @@
-standard_version: 0.3.6
+standard_version: 0.3.7
 schema_version: 1
 rules:
 - rule_id: SEM-001
@@ -155,7 +155,7 @@ rules:
   title: 保留完整段落
   severity: WARNING
   condition: 一个主题被连续短段切碎
-  preferred_action: 合并同一主题的 micro paragraphs 及无意义块分割；保留论证
+  preferred_action: 按相邻句子的语义依赖合段，句号不触发换段；保留新论点与真实转折
   forbidden_pattern:
   - 每句话独占一段
   exceptions:
@@ -200,7 +200,7 @@ rules:
   title: 空白与列表紧凑
   severity: WARNING
   condition: 需要分隔块而非制造大片留白
-  preferred_action: 同组内容靠近；复核全文后半篇的短块堆叠，简单列表项连续排列
+  preferred_action: 分隔强度对应语义距离；同段、分段、模块、章节各有职责，不靠多空行分级；简单列表项连续排列
   forbidden_pattern:
   - 连续空行、简单列表逐项空一行
   exceptions:
