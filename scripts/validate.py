@@ -183,6 +183,23 @@ def scan(text):
                     emit('REN-007', k, 'ERROR', '表格数据列数与表头不符')
         i = j
 
+    # Narrow MathJax boundary hints, not TeX parsing or render certification.
+    math_body = re.sub(r'(`+)(?!`)[\s\S]*?(?<!`)\1(?!`)', mask, body)
+    math_start = None
+    for number, line in enumerate(math_body.splitlines(), 1):
+        if line.strip() == '$$':
+            math_start = None if math_start else number
+            continue
+        if math_start:
+            if re.match(r'\s*(?:#{1,6}\s|[-+*]\s)', line) or re.match(r'\s*(`{3,}|~{3,})', lines[number - 1]):
+                emit('REN-003', number, 'WARNING', '显示公式跨入 Markdown 结构；检查是否缺少数学定界符')
+        else:
+            plain_math = re.sub(r'(?<!\\)\$(?!\$).*?(?<!\\)\$(?!\$)', '', line)
+            if re.search(r'\\(?:text|mathrm|frac|sqrt|begin|end)\s*\{', plain_math):
+                emit('REN-003', number, 'WARNING', '数学命令出现在受支持的美元定界符之外；检查公式或字面代码格式')
+    if math_start:
+        emit('REN-003', math_start, 'WARNING', '独占行的双美元定界符未配对；不代表已验证完整数学语法')
+
     # Heuristic density hints, only prose paragraphs; never a semantic verdict.
     short_run = 0
     for match in re.finditer(r'[^\n]+(?:\n(?!\n)[^\n]+)*', body):

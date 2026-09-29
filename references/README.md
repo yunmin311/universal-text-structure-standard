@@ -37,3 +37,7 @@
 `project-inbox-regression.md` 保留从真实材料发现的“代码包住强调标记，冒号另外加粗”的组合，文件名为中性示例，职责正文缩减为通用描述。修正样本默认只使用 inline code，另有合法嵌套样本证明 WARNING 不等于语法 ERROR。其他 bad examples 是最小反例；人工样本明确标注待判断规则，不伪称检测器可以识别全部语义。
 
 首个提交 `7e49f6c` 曾包含 `sources/project-inbox.md`、`sources/custom-instructions-candidate.md`、`sources/manifest.json`、`sources/request.md`、`sources/voice-readme.md`、旧来源说明以及未脱敏的 good 摘录。0.2.0 清理当前版本后，这些内容仍能从旧提交读取；当前版本脱敏不代表历史脱敏。历史改写与 force push 未获本轮授权，必须另行确认，不在本次维护中执行。
+
+## 只读参考的课程笔记规范
+
+本轮只读参考 [ym-obsidian-course-notes-standard](https://github.com/yunmin311/ym-obsidian-course-notes-standard/tree/54d1362aa4d5c4e875c973b9da1f78b70b729730)，重点为正文写作、内容类型选择矩阵、公式与代码章节。吸收的是按信息任务选格式、第一次教学由正文承担、公式与意义一起解释的原则；不复制其课程目录、打包、状态文件和图片工作流，也不修改该参考仓库。其 README 与模板用于理解职责，未将模板占位内容当成实际课程 Gold。

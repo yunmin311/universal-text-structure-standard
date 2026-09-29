@@ -1,4 +1,4 @@
-standard_version: 0.3.4
+standard_version: 0.3.5
 schema_version: 1
 rules:
 - rule_id: SEM-001
@@ -302,14 +302,14 @@ rules:
   - references/README.md#confirmed-policy
 - rule_id: REN-003
   category: render_safety
-  title: 代码围栏闭合
+  title: 代码围栏与数学块边界
   severity: ERROR
-  condition: 使用代码块保留命令、流程或树形
-  preferred_action: 使用相同字符且长度不少于起始围栏的结束围栏
+  condition: 使用代码围栏或显示数学块
+  preferred_action: 代码围栏匹配闭合；数学定界符独立配对，不吞入普通 Markdown
   forbidden_pattern:
   - 围栏未闭合或错用字符
   exceptions:
-  - 围栏内容按字面处理
+  - 围栏内容按字面处理；数学边界只报启发式 WARNING，不宣称 TeX 已校验
   validation_method: static
   examples:
     good:
