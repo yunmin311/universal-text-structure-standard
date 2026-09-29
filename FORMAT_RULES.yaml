@@ -1,4 +1,4 @@
-standard_version: 0.3.5
+standard_version: 0.3.6
 schema_version: 1
 rules:
 - rule_id: SEM-001
@@ -137,7 +137,7 @@ rules:
   forbidden_pattern:
   - 把目录归属画成时间流程
   exceptions:
-  - 短关系可在正文横向表达；引用块仅用于原文、可复制指令或特殊强调
+  - 短关系可在正文横向表达；引用块可用于原文、可复制指令、易错点与关键边界，少量语义图标须配文字标签
   validation_method: manual
   examples:
     good:

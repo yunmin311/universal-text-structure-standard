@@ -1,6 +1,6 @@
 # universal-text-structure-standard
 
-通用文本结构与排版规范，当前版本 0.3.5。先读 [STANDARD.md](STANDARD.md)：它独立解释 Chat Mode、Document Mode、完整段落、真实层级、技术文档组织与输出前检查。[FORMAT_RULES.yaml](FORMAT_RULES.yaml) 保存 19 个稳定规则编号及检测映射，供工具使用，不是第二份写作长文。
+通用文本结构与排版规范，当前版本 0.3.6。先读 [STANDARD.md](STANDARD.md)：它独立解释 Chat Mode、Document Mode、完整段落、真实层级、技术文档组织与输出前检查。[FORMAT_RULES.yaml](FORMAT_RULES.yaml) 保存 19 个稳定规则编号及检测映射，供工具使用，不是第二份写作长文。
 
 长篇任务从 [USAGE.md](USAGE.md) 进入：先读规范，再看[完整 Self-Attention 修订例](examples/good/self-attention.md)，写完后实际修订并验收。[本轮记录](evaluations/long-form-review.md)保留失败依据、改写对照和验证边界；不能再用短交接样本通过推断长文可用。
 
