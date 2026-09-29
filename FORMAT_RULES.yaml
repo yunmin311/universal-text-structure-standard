@@ -1,4 +1,4 @@
-standard_version: 0.3.7
+standard_version: 0.3.8
 schema_version: 1
 rules:
 - rule_id: SEM-001
@@ -155,7 +155,7 @@ rules:
   title: 保留完整段落
   severity: WARNING
   condition: 一个主题被连续短段切碎
-  preferred_action: 按相邻句子的语义依赖合段，句号不触发换段；保留新论点与真实转折
+  preferred_action: 按语义依赖合段；冒号标签、连接词和单个数值不独立成段，比较对象与说明保持对应
   forbidden_pattern:
   - 每句话独占一段
   exceptions:
@@ -204,7 +204,7 @@ rules:
   forbidden_pattern:
   - 连续空行、简单列表逐项空一行
   exceptions:
-  - 复杂列表与渲染必需间隔保留；不设空白比例目标
+  - 复杂列表与渲染必需间隔保留；整体展示块内紧凑、块外适度间隔，不靠多空行修阅读器样式
   validation_method: heuristic
   examples:
     good:
