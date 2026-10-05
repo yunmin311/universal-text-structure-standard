@@ -6,7 +6,7 @@ rules:
   title: 连续解释用正文
   severity: INFO
   condition: 主题需要先建立认知或解释因果
-  preferred_action: 按模式保留充分解释；学习笔记讲清机制、完整例子与边界，不用术语压缩串替代推理
+  preferred_action: 中文主干承载机制、例子与边界；必要术语有铺垫和解释，禁止密集混写与陌生概念堆叠；英文首现附中文，缩写补齐全称
   forbidden_pattern:
   - 把连续解释拆成 bullet 或碎句
   exceptions:
